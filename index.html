@@ -2,231 +2,308 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cloud</title>
+  <title>Cloud Public</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
-      font-family: 'Segoe UI', sans-serif;
+    :root {
+      --purple-light: #e0f7fa;
+      --pink-light:   #f0d5f5;
+      --purple-dark:  #4a148c;
+      --accent:       #6a1b9a;
+      --bg-card:      #f3e5f5;
+      --text-dark:    #333;
+      --radius:       1rem;
+      --gap:          1.5rem;
+      --transition:   0.3s ease;
+      --font-base:    1.1rem;
+      --font-large:   1.4rem;
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(120deg, var(--purple-light), var(--pink-light) 50%, var(--purple-light));
+      line-height: 1.6;
+      padding: var(--gap);
+      font-size: var(--font-base);
+    }
     h1 {
       text-align: center;
-      margin-top: 40px;
-      color: #4a148c;
-      font-size: 2.8rem;
+      color: var(--purple-dark);
+      margin-bottom: var(--gap);
+      font-size: var(--font-large);
+    }
+    a { color: inherit; text-decoration: none; }
+
+    #mainContainer {
+      max-width: 650px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+      padding: calc(var(--gap) * 1.2);
+      transition: background var(--transition);
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    }
-
-    .input-group {
+    /* hidden until in .edit-mode */
+    #inputGroup {
       display: none;
-      margin-bottom: 30px;
+      margin-bottom: var(--gap);
+      transition: opacity var(--transition);
     }
-
-    .input-group input, .input-group textarea {
+    .edit-mode #inputGroup {
+      display: block;
+      opacity: 1;
+    }
+    #inputGroup label {
+      display: block;
+      font-size: var(--font-large);
+      margin-bottom: 0.5rem;
+      color: var(--purple-dark);
+    }
+    #inputGroup input,
+    #inputGroup textarea {
       width: 100%;
-      padding: 15px;
-      font-size: 1rem;
-      margin-top: 10px;
-      border-radius: 8px;
+      padding: 1rem;
       border: 2px solid #ccc;
-      outline: none;
-      transition: 0.3s;
+      border-radius: var(--radius);
+      font-size: var(--font-base);
+      margin-bottom: 1rem;
+      transition: border-color var(--transition);
     }
-
-    .input-group input:focus, .input-group textarea:focus {
-      border-color: #6a1b9a;
+    #inputGroup input:focus,
+    #inputGroup textarea:focus {
+      border-color: var(--accent);
     }
-
-    textarea {
-      height: 180px;
+    #inputGroup textarea {
+      min-height: 160px;
       resize: vertical;
     }
-
-    button {
-      padding: 12px 20px;
-      font-size: 1rem;
-      margin: 10px 6px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
     .save-btn {
-      background-color: #6a1b9a;
-      color: white;
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: var(--font-large);
+      cursor: pointer;
+      transition: background var(--transition);
     }
-
     .save-btn:hover {
-      background-color: #4a148c;
+      background: var(--purple-dark);
     }
 
-    .edit-btn {
-      background-color: #ff9800;
+    .action-buttons {
+      display: flex;
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      padding: 1rem;
+      font-size: var(--font-large);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    #editModeBtn {
+      background: #ff9800;
       color: #fff;
     }
-
-    .edit-btn:hover {
-      background-color: #ef6c00;
+    #editModeBtn:hover {
+      background: #ef6c00;
     }
-
-    .delete-btn {
-      background-color: #e53935;
-      color: white;
-      padding: 6px 12px;
-      font-size: 0.9rem;
+    .private-btn {
+      background: #4caf50;
+      color: #fff;
     }
-
-    .delete-btn:hover {
-      background-color: #c62828;
+    .private-btn:hover {
+      background: #388e3c;
     }
 
     .note-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
     }
-
+    @media (min-width: 480px) {
+      .note-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     .note-card {
-      background-color: #f3e5f5;
-      padding: 16px 20px;
-      border-radius: 12px;
-      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-      position: relative;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg-card);
+      padding: var(--gap);
+      border-radius: var(--radius);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+      transition: transform var(--transition);
     }
-
+    .note-card:hover {
+      transform: translateY(-4px);
+    }
     .note-title {
       font-weight: bold;
-      font-size: 1.2rem;
-      color: #4a148c;
-      margin-bottom: 8px;
+      color: var(--purple-dark);
+      margin-bottom: 0.75rem;
+      font-size: var(--font-large);
     }
-
     .note-content {
-      font-size: 0.95rem;
+      margin-bottom: var(--gap);
       white-space: pre-wrap;
       overflow-wrap: break-word;
-      color: #333;
-      flex-grow: 1;
+      font-size: var(--font-base);
     }
 
     .note-actions {
-      margin-top: 12px;
       text-align: right;
+      display: none;
     }
-
+    .edit-mode .note-actions {
+      display: block;
+    }
+    .delete-btn {
+      padding: 0.75rem 1rem;
+      background: #e53935;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: var(--font-base);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .delete-btn:hover {
+      background: #c62828;
+    }
   </style>
 </head>
 <body>
 
   <h1>CLOUD PUBLIC</h1>
 
-  <div class="container">
-    <!-- Input Section -->
-    <div class="input-group" id="inputGroup">
+  <div id="mainContainer">
+    <!-- note form -->
+    <div id="inputGroup">
+      <label for="noteTitle">Title</label>
       <input type="text" id="noteTitle" placeholder="Enter note title">
-      <textarea id="noteContent" placeholder="Write your note content here..."></textarea>
+      <label for="noteContent">Content</label>
+      <textarea id="noteContent" placeholder="Write your note here..."></textarea>
       <button class="save-btn" onclick="saveNote()">Save Note</button>
     </div>
 
-    <!-- Edit Mode Trigger -->
-    <button class="edit-btn" onclick="askPassword()">Edit Mode</button>
-    <button class="edit-btn"><a style="text-decoration: none; color: white;" href="private.html">Private notes</a></button>
+    <!-- edit toggle + private link -->
+    <div class="action-buttons">
+      <button id="editModeBtn" onclick="toggleEditMode()">Edit Mode</button>
+      <button class="private-btn"><a href="private.html">Private Notes</a></button>
+    </div>
 
-    <!-- Notes Display Section -->
+    <!-- notes grid -->
     <div class="note-grid" id="notesList"></div>
   </div>
 
   <script>
-    // Firebase Config
-    var firebaseConfig = {
+    // --- Initialize Firebase ---
+    const firebaseConfig = {
       apiKey: "AIzaSyBj72SFCM2wSHEP5IEqOCFNMP_FiL0gw28",
       authDomain: "test-489a1.firebaseapp.com",
+      databaseURL: "https://test-489a1-default-rtdb.firebaseio.com/",
       projectId: "test-489a1",
       storageBucket: "test-489a1.appspot.com",
       messagingSenderId: "978892656529",
       appId: "1:978892656529:web:ea00af8b6e3768abba1430",
-      measurementId: "G-N1382Z67VH",
-      databaseURL: "https://test-489a1-default-rtdb.firebaseio.com/"
+      measurementId: "G-N1382Z67VH"
     };
     firebase.initializeApp(firebaseConfig);
-    var database = firebase.database();
+    const db = firebase.database();
 
-    // Save Note
-    function saveNote() {
-      const title = document.getElementById("noteTitle").value.trim();
-      const content = document.getElementById("noteContent").value.trim();
-      if (title && content) {
-        const newRef = database.ref("advancedNotes").push();
-        newRef.set({ title: title, content: content, timestamp: Date.now() });
-        document.getElementById("noteTitle").value = "";
-        document.getElementById("noteContent").value = "";
-      }
-    }
+    // --- Edit‑mode toggle ---
+    let editMode = false;
+    const container = document.getElementById('mainContainer');
+    const editBtn = document.getElementById('editModeBtn');
 
-    // Load Notes
-    function loadNotes() {
-      const list = document.getElementById("notesList");
-      list.innerHTML = "";
-      database.ref("advancedNotes").orderByChild("timestamp").on("value", function(snapshot) {
-        list.innerHTML = "";
-        let notes = [];
-        snapshot.forEach(function(child) {
-          notes.push({ key: child.key, ...child.val() });
-        });
-        notes.reverse().forEach(note => {
-          const card = document.createElement("div");
-          card.className = "note-card";
-          card.innerHTML = `
-            <div class="note-title">${note.title}</div>
-            <div class="note-content">${note.content}</div>
-            <div class="note-actions">
-              <button class="delete-btn" onclick="confirmDelete('${note.key}')">Delete</button>
-            </div>
-          `;
-          list.appendChild(card);
-        });
-      });
-    }
-
-    // Delete Note with confirmation
-    function confirmDelete(key) {
-      if (confirm("Are you sure you want to delete this note?")) {
-        database.ref("advancedNotes").child(key).remove();
-      }
-    }
-
-    // Enable Edit Mode
-    function askPassword() {
-      const pwd = prompt("Enter admin password:");
-      if (pwd === "origine123") {
-        document.getElementById("inputGroup").style.display = "block";
-        alert("Edit mode enabled.");
+    function toggleEditMode() {
+      if (!editMode) {
+        const pwd = prompt("Enter admin password:");
+        if (pwd === "origine123") {
+          editMode = true;
+          container.classList.add('edit-mode');
+          editBtn.textContent = "Exit Edit Mode";
+        } else {
+          alert("Incorrect password.");
+        }
       } else {
-        alert("Incorrect password.");
+        editMode = false;
+        container.classList.remove('edit-mode');
+        editBtn.textContent = "Edit Mode";
       }
     }
 
-    // Load notes on page load
+    // --- Save Note ---
+    function saveNote() {
+      const title   = document.getElementById("noteTitle").value.trim();
+      const content = document.getElementById("noteContent").value.trim();
+      if (!title || !content) {
+        return alert("Please provide both title and content.");
+      }
+      // push + set returns a Promise
+      const newRef = db.ref("advancedNotes").push();
+      newRef.set({ title, content, timestamp: Date.now() })
+        .then(() => {
+          document.getElementById("noteTitle").value   = "";
+          document.getElementById("noteContent").value = "";
+        })
+        .catch(err => {
+          console.error("SAVE ERROR:", err);
+          alert("Error saving note: " + err.message);
+        });
+    }
+
+    // --- Load Notes (real‑time) ---
+    function loadNotes() {
+      const listRef = db.ref("advancedNotes").orderByChild("timestamp");
+      listRef.on("value",
+        snapshot => {
+          const list = document.getElementById("notesList");
+          list.innerHTML = "";
+          const notes = [];
+          snapshot.forEach(child => notes.push({ key: child.key, ...child.val() }));
+          notes.reverse().forEach(n => {
+            const card = document.createElement("div");
+            card.className = "note-card";
+            card.innerHTML = `
+              <div class="note-title">${n.title}</div>
+              <div class="note-content">${n.content}</div>
+              <div class="note-actions">
+                <button class="delete-btn" onclick="confirmDelete('${n.key}')">Delete</button>
+              </div>`;
+            list.appendChild(card);
+          });
+        },
+        err => {
+          console.error("LOAD ERROR:", err);
+          alert("Error loading notes: " + err.message);
+        }
+      );
+    }
+
+    // --- Delete with confirmation ---
+    function confirmDelete(key) {
+      if (!confirm("Are you sure you want to delete this note?")) return;
+      db.ref("advancedNotes/" + key).remove()
+        .catch(err => {
+          console.error("DELETE ERROR:", err);
+          alert("Error deleting note: " + err.message);
+        });
+    }
+
+    // kick off
     window.onload = loadNotes;
   </script>
-
 </body>
 </html>
