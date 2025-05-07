@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cloud</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(120deg, #e0f7fa 0%, #f0d5f5 50%, #e1bee7 100%);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+      color: #4a148c;
+      font-size: 2.8rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+      display: none;
+      margin-bottom: 30px;
+    }
+
+    .input-group input, .input-group textarea {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .input-group input:focus, .input-group textarea:focus {
+      border-color: #6a1b9a;
+    }
+
+    textarea {
+      height: 180px;
+      resize: vertical;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      margin: 10px 6px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .save-btn {
+      background-color: #6a1b9a;
+      color: white;
+    }
+
+    .save-btn:hover {
+      background-color: #4a148c;
+    }
+
+    .edit-btn {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .edit-btn:hover {
+      background-color: #ef6c00;
+    }
+
+    .delete-btn {
+      background-color: #e53935;
+      color: white;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+    }
+
+    .delete-btn:hover {
+      background-color: #c62828;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .note-card {
+      background-color: #f3e5f5;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .note-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #4a148c;
+      margin-bottom: 8px;
+    }
+
+    .note-content {
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      color: #333;
+      flex-grow: 1;
+    }
+
+    .note-actions {
+      margin-top: 12px;
+      text-align: right;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>CLOUD PUBLIC</h1>
+
+  <div class="container">
+    <!-- Input Section -->
+    <div class="input-group" id="inputGroup">
+      <input type="text" id="noteTitle" placeholder="Enter note title">
+      <textarea id="noteContent" placeholder="Write your note content here..."></textarea>
+      <button class="save-btn" onclick="saveNote()">Save Note</button>
+    </div>
+
+    <!-- Edit Mode Trigger -->
+    <button class="edit-btn" onclick="askPassword()">Edit Mode</button>
+    <button class="edit-btn"><a style="text-decoration: none; color: white;" href="private.html">Private notes</a></button>
+
+    <!-- Notes Display Section -->
+    <div class="note-grid" id="notesList"></div>
+  </div>
+
+  <script>
+    // Firebase Config
+    var firebaseConfig = {
+      apiKey: "AIzaSyBj72SFCM2wSHEP5IEqOCFNMP_FiL0gw28",
+      authDomain: "test-489a1.firebaseapp.com",
+      projectId: "test-489a1",
+      storageBucket: "test-489a1.appspot.com",
+      messagingSenderId: "978892656529",
+      appId: "1:978892656529:web:ea00af8b6e3768abba1430",
+      measurementId: "G-N1382Z67VH",
+      databaseURL: "https://test-489a1-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+    // Save Note
+    function saveNote() {
+      const title = document.getElementById("noteTitle").value.trim();
+      const content = document.getElementById("noteContent").value.trim();
+      if (title && content) {
+        const newRef = database.ref("advancedNotes").push();
+        newRef.set({ title: title, content: content, timestamp: Date.now() });
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteContent").value = "";
+      }
+    }
+
+    // Load Notes
+    function loadNotes() {
+      const list = document.getElementById("notesList");
+      list.innerHTML = "";
+      database.ref("advancedNotes").orderByChild("timestamp").on("value", function(snapshot) {
+        list.innerHTML = "";
+        let notes = [];
+        snapshot.forEach(function(child) {
+          notes.push({ key: child.key, ...child.val() });
+        });
+        notes.reverse().forEach(note => {
+          const card = document.createElement("div");
+          card.className = "note-card";
+          card.innerHTML = `
+            <div class="note-title">${note.title}</div>
+            <div class="note-content">${note.content}</div>
+            <div class="note-actions">
+              <button class="delete-btn" onclick="confirmDelete('${note.key}')">Delete</button>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+      });
+    }
+
+    // Delete Note with confirmation
+    function confirmDelete(key) {
+      if (confirm("Are you sure you want to delete this note?")) {
+        database.ref("advancedNotes").child(key).remove();
+      }
+    }
+
+    // Enable Edit Mode
+    function askPassword() {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === "origine123") {
+        document.getElementById("inputGroup").style.display = "block";
+        alert("Edit mode enabled.");
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    // Load notes on page load
+    window.onload = loadNotes;
+  </script>
+
+</body>
+</html>
