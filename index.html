@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Keep Note - Cloud Notes App</title>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <!-- Fuse.js for fuzzy search -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
 
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(120deg, #e0f7fa, #e1bee7);
-      font-family: 'Segoe UI', sans-serif;
+      background-color: rgb(239, 235, 235);
+      font-family: sans-serif;
     }
 
     h1 {
-      text-align: center;
-      margin-top: 40px;
-      color: #4a148c;
-      font-size: 2.8rem;
+      font-size: 2.4rem;
+      margin: 5px 0;
+      color: #097d07;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 20px;
+      width: 100%;
       background: #ffffff;
       border-radius: 16px;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
     }
 
     .input-group {
       display: none;
-      margin-bottom: 30px;
+      width: 100%;
+      margin-bottom: 20px;
     }
 
     .input-group input, .input-group textarea {
@@ -46,6 +52,7 @@
       border: 2px solid #ccc;
       outline: none;
       transition: 0.3s;
+      box-sizing: border-box;
     }
 
     .input-group input:focus, .input-group textarea:focus {
@@ -57,33 +64,31 @@
       resize: vertical;
     }
 
-    button {
+    button, .search-bar input {
       padding: 12px 20px;
       font-size: 1rem;
-      margin: 10px 6px;
+      margin: 0;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
+      box-sizing: border-box;
     }
 
     .save-btn {
       background-color: #6a1b9a;
       color: white;
+      width: 100%;
     }
-
-    .save-btn:hover {
-      background-color: #4a148c;
-    }
+    .save-btn:hover { background-color: #4a148c; }
 
     .edit-btn {
       background-color: #ff9800;
       color: #fff;
+      flex: 1 1 120px;
+      text-align: center;
     }
-
-    .edit-btn:hover {
-      background-color: #ef6c00;
-    }
+    .edit-btn:hover { background-color: #ef6c00; }
 
     .delete-btn {
       background-color: #e53935;
@@ -91,9 +96,25 @@
       padding: 6px 12px;
       font-size: 0.9rem;
     }
+    .delete-btn:hover { background-color: #c62828; }
 
-    .delete-btn:hover {
-      background-color: #c62828;
+    .search-bar {
+      flex: 2 1 200px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: 2px solid #ccc;
+    }
+    .search-bar button {
+      background-color: #097d07;
+      color: white;
+    }
+    .search-bar button:hover {
+      background-color: #066005;
     }
 
     .note-grid {
@@ -127,28 +148,67 @@
       color: #333;
       flex-grow: 1;
     }
+    /* make links blue */
+    .note-content a {
+      color: blue;
+      text-decoration: underline;
+    }
 
     .note-actions {
       margin-top: 12px;
       text-align: right;
     }
+
+    /* Spinner Styles */
+    #loading {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .spinner {
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #6a1b9a;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
-  <h1>Keep Note - Cloud Notes</h1>
+  <!-- Loading Spinner -->
+  <div id="loading"><div class="spinner"></div></div>
 
   <div class="container">
+    <h1>PUBLIC NOTE</h1>
+    <button class="edit-btn" onclick="askPassword()">Edit Mode</button>
+    <button class="edit-btn">
+      <a style="text-decoration:none;color:#fff;display:block;width:100%;height:100%;" href="private.html">
+        Private notes
+      </a>
+    </button>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search notes…">
+      <button onclick="searchNotes()">Search</button>
+    </div>
+
     <!-- Input Section -->
     <div class="input-group" id="inputGroup">
       <input type="text" id="noteTitle" placeholder="Enter note title">
-      <textarea id="noteContent" placeholder="Write your note content here..."></textarea>
+      <textarea id="noteContent" placeholder="Write your note content here…"></textarea>
       <button class="save-btn" onclick="saveNote()">Save Note</button>
     </div>
-
-    <!-- Edit Mode Trigger -->
-    <button class="edit-btn" onclick="askPassword()">Edit Mode</button>
-    <button class="edit-btn"><a style="text-decoration: none; color: rgb(255, 255, 255);" href="private.html">Private notes</a></button>
   </div>
 
   <div class="note-grid" id="notesList"></div>
@@ -168,67 +228,96 @@
     firebase.initializeApp(firebaseConfig);
     var database = firebase.database();
 
-    // Global Edit Mode flag
     let isEditMode = false;
+    let notesData = [];      // holds all notes
+    let fuse;                // Fuse.js instance
 
-    // Save Note
     function saveNote() {
       const title = document.getElementById("noteTitle").value.trim();
       const content = document.getElementById("noteContent").value.trim();
-      if (title && content) {
-        const newRef = database.ref("advancedNotes").push();
-        newRef.set({ title: title, content: content, timestamp: Date.now() });
-        document.getElementById("noteTitle").value = "";
-        document.getElementById("noteContent").value = "";
-      }
+      if (!title || !content) return;
+      const newRef = database.ref("advancedNotes").push();
+      newRef.set({ title, content, timestamp: Date.now() });
+      document.getElementById("noteTitle").value = "";
+      document.getElementById("noteContent").value = "";
     }
 
-    // Load Notes
-    function loadNotes() {
+    function linkify(text) {
+      return text.replace(/(https?:\/\/[^\s]+)/g, 
+        '<a href="$1" target="_blank">$1</a>');
+    }
+
+    function renderNotes(arr) {
       const list = document.getElementById("notesList");
       list.innerHTML = "";
-      database.ref("advancedNotes").orderByChild("timestamp").on("value", function(snapshot) {
-        list.innerHTML = "";
-        let notes = [];
-        snapshot.forEach(function(child) {
-          notes.push({ key: child.key, ...child.val() });
-        });
-        notes.reverse().forEach(note => {
-          const card = document.createElement("div");
-          card.className = "note-card";
-          card.innerHTML = `
-            <div class="note-title">${note.title}</div>
-            <div class="note-content">${note.content}</div>
-            <div class="note-actions">
-              ${isEditMode ? `<button class="delete-btn" onclick="confirmDelete('${note.key}')">Delete</button>` : ''}
-            </div>
-          `;
-          list.appendChild(card);
-        });
+      arr.forEach(note => {
+        const card = document.createElement("div");
+        card.className = "note-card";
+        card.innerHTML = `
+          <div class="note-title">${note.title}</div>
+          <div class="note-content">${linkify(note.content)}</div>
+          <div class="note-actions">
+            ${isEditMode 
+              ? `<button class="delete-btn" onclick="confirmDelete('${note.key}')">Delete</button>` 
+              : ''}
+          </div>
+        `;
+        list.appendChild(card);
       });
     }
 
-    // Delete Note with confirmation
+    function loadNotes() {
+      const loading = document.getElementById("loading");
+      loading.style.display = "flex";
+
+      database.ref("advancedNotes")
+        .orderByChild("timestamp")
+        .on("value", snapshot => {
+          notesData = [];
+          snapshot.forEach(child => {
+            notesData.push({ key: child.key, ...child.val() });
+          });
+          notesData.reverse();
+
+          // Initialize Fuse if needed
+          fuse = new Fuse(notesData, {
+            keys: ["title", "content"],
+            threshold: 0.4
+          });
+
+          renderNotes(notesData);
+          loading.style.display = "none";
+        });
+    }
+
     function confirmDelete(key) {
       if (confirm("Are you sure you want to delete this note?")) {
         database.ref("advancedNotes").child(key).remove();
       }
     }
 
-    // Enable Edit Mode
     function askPassword() {
       const pwd = prompt("Enter admin password:");
       if (pwd === "origine123") {
         isEditMode = true;
         document.getElementById("inputGroup").style.display = "block";
         alert("Edit mode enabled.");
-        loadNotes(); // Refresh with delete buttons visible
+        renderNotes(notesData);
       } else {
         alert("Incorrect password.");
       }
     }
 
-    // Load notes on page load
+    function searchNotes() {
+      const q = document.getElementById("searchInput").value.trim();
+      if (!q) {
+        renderNotes(notesData);
+      } else {
+        const results = fuse.search(q).map(r => r.item);
+        renderNotes(results);
+      }
+    }
+
     window.onload = loadNotes;
   </script>
 
