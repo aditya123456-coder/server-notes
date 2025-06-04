@@ -435,11 +435,18 @@ box-shadow: 2px 2px 8px black;    }
       elements.app.style.display = "block";
       loadNotes(user.uid);
     } else {
-      elements.app.style.display = "none";
-      elements.loginContainer.style.display = "block";
-      userNotes = [];
-      filteredNotes = [];
-    }
+  elements.app.style.display = "none";
+  elements.loginContainer.style.display = "block";
+  userNotes = [];
+  filteredNotes = [];
+  elements.notesList.innerHTML = ""; // Clear notes list
+  elements.noteContent.value = "";   // Clear textarea
+  currentNoteKey = null;             // Reset selection
+  elements.emptyState.style.display = "flex"; // Show empty state
+  elements.deleteBtn.style.display = "none";
+  elements.saveBtn.style.display = "none";
+}
+
   });
 
   // Auth Functions
