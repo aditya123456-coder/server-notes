@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>locked notebook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <title>protectednotes</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body id="body">
 
     <!-- head -->
 
-    <div class="head">
+    <div id="themehead" class="head">
+        <i id="moon" class="fa-solid fa-moon thememoon"></i>
+        <i id="sun" class="fa-solid fa-sun themesun"></i>
         <button id="addnote" class="addnote">Add</button>
         <button id="changepass" class="changepass">changepass</button>
         <button id="deletebook" class="deletebook">deletebook</button>
@@ -23,7 +26,7 @@
     </div>
 
 
-    <div style="display: block;" id="auth" class="auth">
+    <div style="display: block; margin-bottom: 20px;" id="auth" class="auth">
         <div id="main" style="display: flex; align-items: center; justify-content: center; height: 500px;">
             <button id="opennotes"
                 style="background: red; color: white; box-shadow: 2px 2px 8px red; border: none; border-radius: 5px; font-size: 30px; cursor: pointer;">openNotes</button>
@@ -32,10 +35,10 @@
         <!-- notebookname -->
 
         <div id="namediv" class="namediv">
-            <button id="closenamenotebook"
-                style="background: none; color: white; border: none; float: right; cursor: pointer;">X</button>
-            <h4 style="color: rgba(255, 255, 255, 0.505); text-align: center;">Welcome to our app</h4>
-            <h5 style="color: rgba(255, 255, 255, 0.477); text-align: center;">Enter name of your notebook below.
+            <button class="closenamenotebook" id="closenamenotebook">X</button>
+            <h4 class="namedivh4" id="namedivh4">Welcome to our app</h4>
+            <h5 class="namedivh5" id="namedivh5">Enter name of your
+                notebook below.
                 <br>if your notebook exist then we will open it <br>or we will create it as new notebook so next <br>
                 time you can open it without creating. <br>start journey with as.
             </h5>
@@ -49,7 +52,7 @@
                 style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: none; margin: auto; margin-top: 10px; border: none; cursor: pointer;">Enter</button>
         </div>
         <div id="namediv2" class="namediv2">
-            <h5 style="color: rgba(255, 255, 255, 0.505); text-align: center;">We cant find your notebook <br>we can
+            <h5 id="namediv2h5" class="namediv2h5" style="">We cant find your notebook <br>we can
                 create
                 it either</h5>
             <input class="inputnotebookname" type="name" id="createname" placeholder="notebook name">
@@ -72,11 +75,11 @@
 
     <div id="addnotediv" class="addnotediv">
         <button id="closeaddnotediv"
-            style="background: none; color: white; border: thin solid black; float: right; cursor: pointer; margin-left: -20px;">X</button>
-        <h3 style="color: rgba(255, 255, 255, 0.677); text-align: center;">Note</h3>
+            style="background: none; color: white; border: thin solid rgba(0, 0, 0, 0); float: right; cursor: pointer; margin-left: -20px; transition: color 1s;">X</button>
+        <h3 id="addnotedivh3" style="color: rgba(255, 255, 255, 0.677); text-align: center; transition: color 1s;">Note</h3>
         <input class="inputnotebookname" type="name" id="notename" placeholder="name">
         <textarea id="notecontent" placeholder="Write your note here..."
-            style="width: 90%; height: 150px; margin: 10px auto; display: block; padding: 10px; border-radius: 5px; border: 1px solid white; background: black; color: white; resize: vertical;"></textarea>
+            style="width: 90%; height: 150px; margin: 10px auto; display: block; padding: 10px; border-radius: 5px; border: 1px solid white; background: black; color: white; resize: vertical; transition: color 1s, background 1s,border 1s;"></textarea>
         <button id="savenote"
             style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: block; margin: auto; margin-top: 10px; border: none; cursor: pointer;">save</button>
     </div>
@@ -85,8 +88,8 @@
 
     <div id="changepassword" style="text-align: center;" class="changepassword">
         <button id="closenchangepassword"
-            style="background: none; color: white; border: none; float: right; cursor: pointer;">X</button>
-        <h4 style="color: rgba(255, 255, 255, 0.505); text-align: center;">Confirm password</h4>
+            style="background: none; color: white; border: none; float: right; cursor: pointer; transition: color 1s;">X</button>
+        <h4 id="changepasswordh4" style="color: rgba(255, 255, 255, 0.505); text-align: center; transition: color 1s;">Confirm password</h4>
         <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="oldpassword"
             placeholder="Enter old password">
         <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="newpassword"
@@ -113,7 +116,8 @@
     <h4 id="loading" style="color: white; position: fixed; bottom: 10px; left: 10px; display: none;">loading...</h1>
 
 
-        <script type="module" src="main.js"></script>
+        <script type="module" src="main.js">
+        </script>
 
 </body>
 

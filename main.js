@@ -16,16 +16,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                 getDocs,
                 deleteDoc
             } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-            import { collection } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+            import { collection,query, orderBy,serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
             const firebaseConfig = {
-                apiKey: "AIzaSyD4PXjjde3JDhGZlz0kgxRV5shpXlOzr-4",
-                authDomain: "test-6dbab.firebaseapp.com",
-                projectId: "test-6dbab",
-                storageBucket: "test-6dbab.firebasestorage.app",
-                messagingSenderId: "406622333622",
-                appId: "1:406622333622:web:d05642da141d52f1cf5417",
-                measurementId: "G-P7HJKPQJK3"
+                apiKey: "AIzaSyBj72SFCM2wSHEP5IEqOCFNMP_FiL0gw28",
+                authDomain: "test-489a1.firebaseapp.com",
+                databaseURL: "https://test-489a1-default-rtdb.firebaseio.com",
+                projectId: "test-489a1",
+                storageBucket: "test-489a1.firebasestorage.app",
+                messagingSenderId: "978892656529",
+                appId: "1:978892656529:web:ea00af8b6e3768abba1430",
+                measurementId: "G-N1382Z67VH"
             };
 
             const app = initializeApp(firebaseConfig);
@@ -38,12 +39,136 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
             let currentnotecontent = null;
             let currentbookname = null;
             let currentbooknameref = null;
+            let themeindex = 0;
+
+            //changetheme
+
+            document.getElementById("moon").addEventListener("click", () => {
+                document.getElementById("moon").style.display = "none";
+                document.getElementById("sun").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("moon").classList.add("showthememoon");
+                    document.getElementById("sun").classList.add("showthemesun");
+                });
+                day();
+            });
+
+            document.getElementById("sun").addEventListener("click", () => {
+                document.getElementById("sun").style.display = "none";
+                document.getElementById("moon").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("moon").classList.remove("showthememoon");
+                    document.getElementById("sun").classList.remove("showthemesun");
+                })
+                night();
+            })
+
+            //makeday
+
+            function day() {
+                themeindex = 1;
+                document.getElementById("themehead").classList.add("themehead");
+                document.getElementById("body").classList.add("themebody");
+                document.getElementById("closenamenotebook").style.color = "black";
+                document.getElementById("namediv").style.boxShadow = "2px 2px 8px black";
+                document.getElementById("namedivh4").style.color = "rgba(0, 0, 0, 0.505)";
+                document.getElementById("namedivh5").style.color = "rgba(0, 0, 0, 0.505)";
+                document.getElementById("notebookname").style.borderBottom = "thin solid rgb(0, 0, 0)";
+                document.getElementById("notebookpass").style.borderBottom = "thin solid rgb(0, 0, 0)";
+                document.getElementById("notebookname").style.color = "black";
+                document.getElementById("notebookpass").style.color = "black";
+                document.getElementById("namediv2").style.boxShadow = "2px 2px 8px rgb(0, 0, 0)";
+                document.getElementById("createname").style.borderBottom = "thin solid rgb(0, 0, 0)";
+                document.getElementById("createpass").style.borderBottom = "thin solid rgb(0, 0, 0)";
+                document.getElementById("createname").style.color = "black";
+                document.getElementById("createpass").style.color = "black";
+                document.getElementById("namediv2h5").style.color = "rgba(0, 0, 0, 0.505)";
+                document.getElementById("addnote").classList.add("themetitlebtn");
+                document.getElementById("backnote").classList.add("themetitlebtn");
+                document.getElementById("deletenote").classList.add("themetitlebtn");
+                document.getElementById("savechange").classList.add("themetitlebtn");
+                document.getElementById("changepass").classList.add("themetitlebtn");
+                document.getElementById("deletebook").classList.add("themetitlebtn");
+                document.getElementById("notetitleh3").style.color = "black";
+                document.querySelectorAll(".note-button").forEach(btn => {
+                    btn.classList.add("themenote-button");
+                });
+                document.getElementById("changepassword").classList.add("themechangepassword");
+                document.getElementById("changepasswordh4").style.color = "rgba(0, 0, 0, 0.505)";
+                document.getElementById("oldpassword").classList.add("changepasswordinput");
+                document.getElementById("newpassword").classList.add("changepasswordinput");
+                document.getElementById("renewpassword").classList.add("changepasswordinput");
+                document.getElementById("closenchangepassword").style.color = "black";
+                document.getElementById("addnotediv").classList.add("themeaddnotediv");
+                document.getElementById("closeaddnotediv").style.color = "black";
+                document.getElementById("addnotedivh3").style.color = "rgba(0, 0, 0, 0.677)";
+                document.getElementById("notename").classList.add("changepasswordinput");
+                document.getElementById("notecontent").style.color = "black";
+                document.getElementById("notecontent").style.background = "white";
+                document.getElementById("notecontent").style.border = "1px solid black";
+                document.getElementById("notetext").classList.add("themenotetext");
+                document.getElementById("notification").classList.add("themenotification");
+            }
+
+            //makenight
+
+            function night() {
+                themeindex = 0;
+                document.getElementById("themehead").classList.remove("themehead");
+                document.getElementById("body").classList.remove("themebody");
+                document.getElementById("closenamenotebook").style.color = "white";
+                document.getElementById("namediv").style.boxShadow = "2px 2px 8px white";
+                document.getElementById("namedivh4").style.color = "rgba(255, 255, 255, 0.505)";
+                document.getElementById("namedivh5").style.color = "rgba(255, 255, 255, 0.505)";
+                document.getElementById("notebookname").style.borderBottom = "thin solid white";
+                document.getElementById("notebookpass").style.borderBottom = "thin solid white";
+                document.getElementById("notebookname").style.color = "white";
+                document.getElementById("notebookpass").style.color = "white";
+                document.getElementById("namediv2").style.boxShadow = "2px 2px 8px white";
+                document.getElementById("createname").style.borderBottom = "thin solid white";
+                document.getElementById("createpass").style.borderBottom = "thin solid white";
+                document.getElementById("createname").style.color = "white";
+                document.getElementById("createpass").style.color = "white";
+                document.getElementById("namediv2h5").style.color = "rgba(255, 255, 255, 0.505)";
+                document.getElementById("addnote").classList.remove("themetitlebtn");
+                document.getElementById("backnote").classList.remove("themetitlebtn");
+                document.getElementById("deletenote").classList.remove("themetitlebtn");
+                document.getElementById("savechange").classList.remove("themetitlebtn");
+                document.getElementById("changepass").classList.remove("themetitlebtn");
+                document.getElementById("deletebook").classList.remove("themetitlebtn");
+                document.getElementById("notetitleh3").style.color = "rgba(255,255,255,0.633)";
+                document.querySelectorAll(".note-button").forEach(btn => {
+                    btn.classList.remove("themenote-button");
+                });
+                document.getElementById("changepassword").classList.remove("themechangepassword");
+                document.getElementById("changepasswordh4").style.color = "rgba(255, 255, 255, 0.505)";
+                document.getElementById("oldpassword").classList.remove("changepasswordinput");
+                document.getElementById("newpassword").classList.remove("changepasswordinput");
+                document.getElementById("renewpassword").classList.remove("changepasswordinput");
+                document.getElementById("closenchangepassword").style.color = "white";
+                document.getElementById("addnotediv").classList.remove("themeaddnotediv");
+                document.getElementById("closeaddnotediv").style.color = "white";
+                document.getElementById("addnotedivh3").style.color = "rgba(255, 255, 255, 0.677)";
+                document.getElementById("notename").classList.remove("changepasswordinput");
+                document.getElementById("notecontent").style.color = "white";
+                document.getElementById("notecontent").style.background = "black";
+                document.getElementById("notecontent").style.border = "1px solid white";
+                document.getElementById("notetext").classList.remove("themenotetext");
+                document.getElementById("notification").classList.remove("themenotification");
+            }
+
 
             //shownotification
 
             function note(value) {
                 document.getElementById("notification").textContent = value;
                 document.getElementById("notification").classList.add("shownotification");
+                if (themeindex == 1) {
+                    document.getElementById("notification").classList.add("themenotification");
+                }
+                else {
+                    document.getElementById("notification").classList.remove("themenotification");
+                }
                 setTimeout(() => {
                     document.getElementById("notification").classList.remove("shownotification");
                 }, 3000);
@@ -71,9 +196,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
             async function shownotes() {
                 load();
                 const notetitleDiv = document.getElementById("notetitle");
-                notetitleDiv.innerHTML = `<h3 style="color: rgba(255,255,255,0.633);text-align: center;">All notes(Click to open)</h3>`;
+                notetitleDiv.innerHTML = `<h3 id="notetitleh3" style="color: rgba(255,255,255,0.633);text-align: center;">All notes(Click to open)</h3>`;
                 const saveref = collection(db, "notebooks", currentpass, "notes");
-                const snap = await getDocs(saveref);
+                const q = query(saveref,orderBy("createdAt","desc"));
+                const snap = await getDocs(q);
 
                 if (snap.empty) {
                     note("No notes found, add one first");
@@ -88,14 +214,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                     const noteButton = document.createElement("button");
                     noteButton.textContent = noteData.name || "Untitled";
                     noteButton.classList.add("note-button");
-                    noteButton.onmouseover = () => { noteButton.style.background = "red"; };
-                    noteButton.onmouseout = () => { noteButton.style.background = "black"; };
+                    if (themeindex == 1) {
+                        noteButton.classList.add("themenote-button");
+                    }
+                    else {
+                        noteButton.classList.remove("themenote-button");
+                    }
 
                     // Click event to show note content
                     noteButton.addEventListener("click", () => {
                         currentnotename = noteData.name;
                         currentnote = docSnap.id;
-                        document.getElementById("deletebook").style.display="none";
+                        document.getElementById("deletebook").style.display = "none";
                         document.getElementById("changepass").style.display = "none";
                         document.getElementById("addnote").style.display = "none";
                         document.getElementById("backnote").style.display = "block";
@@ -108,6 +238,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                             document.getElementById("deletenote").classList.add("showdeletenote");
                             document.getElementById("notetext").classList.add("shownotetext");
                             document.getElementById("notetext").value = noteData.content;
+                            if (themeindex == 1) {
+                                document.getElementById("notetext").classList.add("themenotetext");
+                            }
+                            else {
+                                document.getElementById("notetext").classList.remove("themenotetext");
+                            }
                             document.getElementById("addnote").classList.remove("shownamediv");
                             document.getElementById("deletebook").classList.remove("showdeletebook");
                         });
@@ -121,7 +257,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
 
             //backnote
             document.getElementById("backnote").addEventListener("click", () => {
-                document.getElementById("deletebook").style.display="block";
+                document.getElementById("deletebook").style.display = "block";
                 document.getElementById("changepass").style.display = "block";
                 document.getElementById("backnote").style.display = "none";
                 document.getElementById("deletenote").style.display = "none";
@@ -267,8 +403,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                     note("notebook and its subcollections deleted — reloading page...");
                     setTimeout(() => location.reload(), 2000);
                 }
-                else
-                {
+                else {
                     note("incorrect");
                 }
             })
@@ -303,6 +438,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                 }
                 else {
                     load.style.display = "none";
+                }
+                if (themeindex == 1) {
+                    load.style.color = "black";
+                }
+                else {
+                    load.style.color = "white";
                 }
             }
 
@@ -423,10 +564,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
                 load();
                 const name = document.getElementById("notename").value;
                 const content = document.getElementById("notecontent").value;
+                if (!name || !content) {
+                    note("please enter all imformation");
+                    load();
+                    return;
+                }
                 const saveref = collection(db, "notebooks", currentpass, "notes");
                 await addDoc(saveref, {
                     name: name,
-                    content: content
+                    content: content,
+                    createdAt: serverTimestamp()
                 });
                 note("note saved");
                 document.getElementById("notename").value = "";
