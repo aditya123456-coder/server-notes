@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <title>protectednotes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="note.png">
+</head>
+
+<body id="body">
+
+    <!-- head -->
+
+    <div id="themehead" class="head">
+        <i id="moon" class="fa-solid fa-moon thememoon"></i>
+        <i id="sun" class="fa-solid fa-sun themesun"></i>
+        <button style="border: none;" id="addnote" class="addnote"><i class="fa-solid fa-plus"></i></button>
+        <button style="border: none;" id="changepass" class="changepass"><i class="fa-solid fa-key"></i> change</button>
+        <button style="border: none;" id="deletebook" class="deletebook"><i class="fa-solid fa-book"></i> delete</button>
+        <button style="border: none;" id="backnote" class="backnote"><i class="fa-solid fa-arrow-left"></i></button>
+        <button style="border: none;" id="deletenote" class="deletenote"><i class="fa-regular fa-trash-can"></i></button>
+        <button style="border: none;" id="savechange" class="savechange"><i class="fa-solid fa-cloud-arrow-down"></i></button>
+        <h1 class="headh1"><img class="img" src="note.png" alt=""></h1>
+    </div>
+
+
+    <div style="display: block; margin-bottom: 20px;" id="auth" class="auth">
+        <div id="main" style="display: flex; align-items: center; justify-content: center; height: 500px;">
+            <button id="opennotes"
+                style="background: red; color: white; box-shadow: 2px 2px 8px red; border: none; border-radius: 5px; font-size: 30px; cursor: pointer;">openNotes</button>
+        </div>
+
+        <!-- notebookname -->
+
+        <div id="namediv" class="namediv">
+            <button class="closenamenotebook" id="closenamenotebook">X</button>
+            <h4 class="namedivh4" id="namedivh4">Welcome to our app</h4>
+            <h5 class="namedivh5" id="namedivh5">Enter name of your
+                notebook below.
+                <br>if your notebook exist then we will open it <br>or we will create it as new notebook so next <br>
+                time you can open it without creating. <br>start journey with as.
+            </h5>
+            <input style="display: block;" class="inputnotebookname" type="name" id="notebookname"
+                placeholder="notebook name">
+            <button id="gotonotebook"
+                style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: block; margin: auto; margin-top: 10px; border: none; cursor: pointer;">Enter</button>
+            <input style="margin-top: 20px; display: none;" class="inputnotebookname" type="password" id="notebookpass"
+                placeholder="notebook password">
+            <button id="gotonotebook1"
+                style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: none; margin: auto; margin-top: 10px; border: none; cursor: pointer;">Enter</button>
+        </div>
+        <div id="namediv2" class="namediv2">
+            <h5 id="namediv2h5" class="namediv2h5" style="">We cant find your notebook <br>we can
+                create
+                it either</h5>
+            <input class="inputnotebookname" type="name" id="createname" placeholder="notebook name">
+            <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="createpass"
+                placeholder="notebook password">
+            <button
+                style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: block; margin: auto; margin-top: 10px; border: none; cursor: pointer;"
+                id="create">create</button>
+        </div>
+    </div>
+
+    <!-- notetitle -->
+
+    <div style="display: none;" id="notetitle" class="notetitle">
+        <h3 id="line" style="color: rgba(255, 255, 255, 0.633);">All notes</h3>
+    </div>
+
+
+    <!-- addnotediv -->
+
+    <div id="addnotediv" class="addnotediv">
+        <button id="closeaddnotediv"
+            style="background: none; color: white; border: thin solid rgba(0, 0, 0, 0); float: right; cursor: pointer; margin-left: -20px; transition: color 1s;">X</button>
+        <h3 id="addnotedivh3" style="color: rgba(255, 255, 255, 0.677); text-align: center; transition: color 1s;">Note
+        </h3>
+        <input class="inputnotebookname" type="name" id="notename" placeholder="name">
+        <textarea id="notecontent" placeholder="Write your note here..."
+            style="width: 90%; height: 150px; margin: 10px auto; display: block; padding: 10px; border-radius: 5px; border: 1px solid white; background: black; color: white; resize: vertical; transition: color 1s, background 1s,border 1s;"></textarea>
+        <button id="savenote"
+            style="background-color: red; color: white; box-shadow: 1px 1px 6px red; display: block; margin: auto; margin-top: 10px; border: none; cursor: pointer;">save</button>
+    </div>
+
+    <!-- changepassword -->
+
+    <div id="changepassword" style="text-align: center;" class="changepassword">
+        <button id="closenchangepassword"
+            style="background: none; color: white; border: none; float: right; cursor: pointer; transition: color 1s;">X</button>
+        <h4 id="changepasswordh4" style="color: rgba(255, 255, 255, 0.505); text-align: center; transition: color 1s;">
+            Confirm password</h4>
+        <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="oldpassword"
+            placeholder="Enter old password">
+        <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="newpassword"
+            placeholder="Enter new password">
+        <input style="margin-top: 20px;" class="inputnotebookname" type="password" id="renewpassword"
+            placeholder="Renter new password">
+        <button id="savepass"
+            style="background-color: red; color: white; box-shadow: 1px 1px 6px red; margin: auto; margin-top: 10px; border: none; cursor: pointer;">Enter</button>
+    </div>
+
+
+    <!-- mainnotecontent -->
+
+    <div>
+        <textarea class="notetext" name="note" id="notetext">hi</textarea>
+    </div>
+
+    <!-- notification -->
+
+    <div id="notification" class="notification">
+        no notification
+    </div>
+
+    <div style="display: none;" class="loading" id="loading">
+        <iframe src="https://lottie.host/embed/5d2ce50f-c84f-4cac-a160-cfa3cd2bb14d/DCxM42t92X.lottie"></iframe>
+    </div>
+
+
+        <script type="module" src="main.js">
+        </script>
+
+
+</body>
+
+</html>
