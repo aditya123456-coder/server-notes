@@ -1,0 +1,576 @@
+body {
+            background-color: black;
+            font-family: sans-serif;
+            margin: 0;
+            max-width: 100%;
+            overflow-x: hidden;
+            transition: background-color 1s ease-in-out;
+        }
+
+        .themebody {
+            background-color: rgb(255, 255, 255);
+        }
+
+        html {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .head {
+            background-color: rgb(0, 0, 0);
+            border: thin solid rgba(255, 255, 255, 0);
+            box-shadow: 1px 1px 20px rgba(255, 255, 255, 0.503);
+            transition: background-color 1s, boxs-hadow 1s ease-in-out;
+        }
+
+        .themehead {
+            background-color: white;
+            box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.503);
+        }
+
+        .namediv {
+            border: thin solid rgb(255, 255, 255);
+            padding: 10px;
+            margin: 20px;
+            width: 500px;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 2px 2px 8px white;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+            transition: opacity 0.5s, box-shadow 1s ease-in-out;
+        }
+
+        .namediv2 {
+            border: thin solid rgb(255, 255, 255);
+            padding: 10px;
+            margin: 20px;
+            width: 500px;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 2px 2px 8px rgb(255, 255, 255);
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+            transition: opacity 0.5s, box-shadow 1s ease-in-out;
+        }
+
+        .addnote {
+            float: right;
+            margin-top: 30px;
+            font-size: 20px;
+            margin-right: 20px;
+            background-color: rgb(0, 0, 0);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            pointer-events: none;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            opacity: 0;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        .addnotediv {
+            border: thin solid rgb(255, 255, 255);
+            padding: 10px;
+            margin: 20px;
+            width: 500px;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 8px white;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: auto;
+            display: none;
+            transition: opacity 0.5s,box-shadow 1s ease-in-out;
+        }
+        .themeaddnotediv
+        {
+            box-shadow: 2px 2px 8px rgb(0, 0, 0);
+        }
+
+        .shownamediv {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .note-button {
+            width: auto;
+            margin-top: 20px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            box-shadow: 0px 0px 0px white;
+            border: 1px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        .themenote-button {
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.56);
+        }
+
+        @media (max-width: 480px) {
+            .note-button {
+                width: auto;
+            }
+        }
+
+        .notetext {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px;
+            width: 95%;
+            height: 78vh;
+            overflow: auto;
+            white-space: pre;
+            display: none;
+            opacity: 0;
+            overflow-wrap: normal;
+            word-wrap: normal;
+            pointer-events: none;
+            transition: opacity 0.5s,color 1s ease-in-out;
+        }
+        .themenotetext
+        {
+             color: rgb(0, 0, 0);
+        }
+
+        .shownotetext {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .notetext:focus {
+            outline: none;
+        }
+
+
+
+        @media (max-width:480px) {
+            .notetext{
+                width: 85%;
+            }
+            .namediv {
+                border: thin solid rgb(255, 255, 255);
+                padding: 10px;
+                margin: 20px;
+                width: 300px;
+                margin: auto;
+                margin-top: 50px;
+            }
+
+            .namediv2 {
+
+                padding: 10px;
+                margin: 20px;
+                width: 300px;
+                margin: auto;
+                margin-top: 50px;
+                border-radius: 20px;
+            }
+
+            .head {
+                font-size: 10px;
+            }
+
+            .addnote {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+
+            .addnotediv {
+                
+                padding: 10px;
+                margin: 20px;
+                width: 300px;
+                margin: auto;
+                margin-top: 50px;
+                margin-bottom: 20px;
+            }
+
+        }
+
+        .inputnotebookname {
+            background: none;
+            border: none;
+            border-bottom: thin solid rgb(255, 255, 255);
+            margin: auto;
+            display: block;
+            text-align: center;
+            color: white;
+            transition: border-bottom 1s,color 1s ease-in-out;
+        }
+        .changepasswordinput
+        {
+            border-bottom: thin solid rgb(0, 0, 0);
+            color: rgb(0, 0, 0);
+        }
+
+        .auth {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: auto;
+        }
+
+        .authremove {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .notification {
+            background-color: black;
+            z-index: 10;
+            position: fixed;
+            border: thin solid white;
+            width: 200px;
+            right: 20px;
+            bottom: 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            padding: 15px;
+            opacity: 0;
+            color: rgba(255, 255, 255, 0.56);
+            pointer-events: none;
+            box-shadow: 2px 2px 8px white;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .themenotification{
+            background-color: rgb(255, 255, 255);
+            box-shadow: 2px 2px 8px rgb(0, 0, 0);
+            color: rgba(0, 0, 0, 0.56);
+        }
+
+        .shownotification {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #notetitle {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .backnote {
+            background: none;
+            color: white;
+            border: thin solid white;
+            margin-top: 30px;
+            border-radius: 5px;
+            margin-right: 20px;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            float: right;
+            pointer-events: none;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .backnote {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .showbacknote {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .deletenote {
+            background: none;
+            color: white;
+            border: thin solid white;
+            margin-top: 30px;
+            border-radius: 5px;
+            margin-right: 20px;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            float: right;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            pointer-events: none;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .deletenote {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .showdeletenote {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .savechange {
+            background: none;
+            color: white;
+            border: thin solid white;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-right: 20px;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            float: right;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            pointer-events: none;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .savechange {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .showsavechange {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .changepass {
+            background: none;
+            color: white;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-right: 20px;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            float: right;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            pointer-events: none;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .changepass {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .showchangepass {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .img {
+            width: 50px;
+            border-radius: 50%;
+        }
+
+        .headh1 {
+            color: rgb(255, 255, 255);
+            margin-left: 10px;
+            margin: 10px;
+        }
+
+        @media (max-width:480px) {
+            .img {
+                width: 40px;
+            }
+
+            .headh1 {
+                color: rgb(255, 255, 255);
+                margin-left: 10px;
+                margin: 5px;
+            }
+        }
+
+        .changepassword {
+            border: thin solid rgb(255, 255, 255);
+            padding: 10px;
+            margin: 20px;
+            width: 500px;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 2px 2px 8px white;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            margin-bottom: 20px;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .themechangepassword
+        {
+            box-shadow: 2px 2px 8px rgb(0, 0, 0);
+        }
+
+        @media (max-width:480px) {
+            .changepassword {
+                padding: 10px;
+                margin: 20px;
+                width: 300px;
+                margin: auto;
+                margin-top: 50px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .showchangepassword {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .deletebook {
+            background: none;
+            color: white;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-right: 20px;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            float: right;
+            box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.534);
+            pointer-events: none;
+            transition: opacity 1s, background-color 1s, color 1s, box-shadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .deletebook {
+                margin-top: 15px;
+                margin-right: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .showdeletebook {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .thememoon {
+            color: white;
+            float: right;
+            font-size: 30px;
+            margin-top: 30px;
+            margin-right: 10px;
+            opacity: 1;
+            text-shadow: 1px 1px 20px white;
+            cursor: pointer;
+            display: block;
+            transition: opacity 1s, textshadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .thememoon {
+                font-size: 25px;
+                margin-top: 15px;
+                margin-right: 10px;
+            }
+        }
+
+        .showthememoon {
+            opacity: 0;
+            text-shadow: 1px 1px 20px rgba(255, 255, 255, 0);
+        }
+
+        .themesun {
+            color: rgb(30, 255, 0);
+            float: right;
+            font-size: 30px;
+            margin-top: 30px;
+            margin-right: 10px;
+            text-shadow: 1px 1px 20px rgba(43, 255, 0, 0);
+            cursor: pointer;
+            opacity: 0;
+            display: none;
+            transition: opacity 1s, textshadow 1s ease-in-out;
+        }
+
+        @media (max-width:480px) {
+            .themesun {
+                font-size: 25px;
+                margin-top: 15px;
+                margin-right: 10px;
+            }
+        }
+
+        .showthemesun {
+            text-shadow: 1px 1px 20px rgb(43, 255, 0);
+            opacity: 1;
+        }
+
+        .closenamenotebook {
+            background: none;
+            color: white;
+            border: none;
+            float: right;
+            cursor: pointer;
+            transition: color 1s ease-in-out;
+        }
+
+        .namedivh4 {
+            color: rgba(255, 255, 255, 0.505);
+            text-align: center;
+            transition: color 1s ease-in-out;
+        }
+
+        .namedivh5 {
+            color: rgba(255, 255, 255, 0.477);
+            text-align: center;
+            transition: color 1s ease-in-out;
+        }
+
+        .namediv2h5 {
+            color: rgba(255, 255, 255, 0.505);
+            text-align: center;
+            transition: color 1s ease-in-out;
+        }
+
+        .themetitlebtn {
+            background-color: white;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.534);
+            color: black;
+        }
+        .loading{
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.647);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        iframe{
+            border: none;
+        }
